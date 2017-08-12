@@ -1,4 +1,6 @@
 from django.contrib.auth import authenticate
+from audit import models
+from django.conf import settings
 import subprocess
 import getpass
 import random
@@ -30,19 +32,35 @@ class UserShell(object):
             print("too many attempts!")
             return False
 
+    def run_script(self):
+        session_obj = models.SessionLog.objects.create(
+            account=self.user.account,
+            host_user_bind=self.selected_host)
+        session_tracker_script = "/bin/bash {} {} {}"
+        session_tracker_script.format(
+            settings.SESSION_TRACKER_sCRIPT,
+            self.random_id,
+            session_obj.id)
+        session_tracker_obj = subprocess.Popen(
+            session_tracker_script,
+            shell=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE)
+        return session_tracker_obj
+
     @property
     def get_random_id(self):
         temp_str = string.ascii_lowercase + string.digits
         self.random_id = ''.join(random.sample(temp_str, 12))
         return self.random_id
 
-    def ssh_connect(self, selected_host):
+    def ssh_connect(self):
         cmd = "sshpass -p {} ssh-audit {}@{} -p {} -o StrictHostKeyChecking=no -Z {}"
         cmd = cmd.format(
-                selected_host.host_user.password,
-                selected_host.host_user.username,
-                selected_host.host.ip_addr,
-                selected_host.host.port,
+                self.selected_host.host_user.password,
+                self.selected_host.host_user.username,
+                self.selected_host.host.ip_addr,
+                self.selected_host.host.port,
                 self.get_random_id,
             )
         return subprocess.run(cmd, shell=True)
@@ -88,8 +106,11 @@ class UserShell(object):
                     choice1 = int(choice1)
                 if choice1 not in index_list1:
                     continue
-                print("selected host ", host_bind[choice1])
-                ssh_channel = self.ssh_connect(host_bind[choice1])
+                self.selected_host = host_bind[choice1]
+                print("selected host ", self.selected_host)
+                script_obj = self.run_script()
+                ssh_channel = self.ssh_connect()
+                print(script_obj.stdout.read(), script_obj.stderr.read())
 
 
 # get pid

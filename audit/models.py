@@ -68,6 +68,16 @@ class HostUserBind(models.Model):
         unique_together = ('host', 'host_user')
 
 
+class SessionLog(models.Model):
+    account = models.ForeignKey("Account")
+    host_user_bind = models.ForeignKey("HostUserBind")
+    start_date = models.DateTimeField(auto_now=True)
+    end_date = models.DateTimeField(blank=True, null=True)
+
+    def __str__(self):
+        return "%s-%s" % (self.account, self.host_user_bind)
+
+
 class AuditLog(models.Model):
     """
     log table
