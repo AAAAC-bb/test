@@ -33,8 +33,8 @@ class UserShell(object):
     @property
     def get_random_id(self):
         temp_str = string.ascii_lowercase + string.digits
-        self.tag_id = ''.join(random.sample(temp_str, 12))
-        return self.tag_id
+        self.random_id = ''.join(random.sample(temp_str, 12))
+        return self.random_id
 
     def ssh_connect(self, selected_host):
         cmd = "sshpass -p {} ssh-audit {}@{} -p {} -o StrictHostKeyChecking=no -Z {}"
@@ -43,7 +43,7 @@ class UserShell(object):
                 selected_host.host_user.username,
                 selected_host.host.ip_addr,
                 selected_host.host.port,
-                get_random_id,
+                self.get_random_id,
             )
         return subprocess.run(cmd, shell=True)
 
