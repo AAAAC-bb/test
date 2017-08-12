@@ -38,7 +38,7 @@ class UserShell(object):
             host_user_bind=self.selected_host)
         session_tracker_script = "/bin/bash {} {} {}"
         session_tracker_script.format(
-            settings.SESSION_TRACKER_sCRIPT,
+            settings.SESSION_TRACKER_SCRIPT,
             self.random_id,
             session_obj.id)
         session_tracker_obj = subprocess.Popen(
