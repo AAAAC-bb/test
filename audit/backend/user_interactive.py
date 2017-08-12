@@ -48,6 +48,7 @@ class UserShell(object):
             choice = input(">").strip()
             if choice.isdigit():
                 choice = int(choice)
+            host_bind = None
             if choice in index_list:
                 host_bind = host_groups[choice].host_user_binds.all()
             if choice == len(host_groups):
