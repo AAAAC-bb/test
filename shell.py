@@ -9,4 +9,3 @@ if __name__ == "__main__":
     django.setup()
     obj = user_interactive.UserShell(sys.argv)
     obj.start()
-1
