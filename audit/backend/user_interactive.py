@@ -28,6 +28,16 @@ class UserShell(object):
             print("too many attempts!")
             return False
 
+    def ssh_connect(self, selected_host):
+        cmd = "sshpass -p {} ssh {}@{} -p {} -o StrictHostKeyChecking=no"
+        cmd = cmd.format(
+                selected_host.host_user.password,
+                selected_host.host_user.username,
+                selected_host.host.ip_addr,
+                selected_host.host.port,
+            )
+        ssh_channel = subprocess.run(cmd, shell=True)
+
     def start(self):
         if not self.auth():
             return None
@@ -69,12 +79,5 @@ class UserShell(object):
                     choice1 = int(choice1)
                 if choice1 not in index_list1:
                     continue
-                selected_host = host_bind[choice1]
-                print("selected host ", selected_host)
-                cmd = "sshpass -p %s ssh %s@%s -p %s" % (
-                    selected_host.host_user.password,
-                    selected_host.host_user.username,
-                    selected_host.host.ip_addr,
-                    selected_host.host.port,
-                    )
-                ssh_channel = subprocess.run(cmd, shell=True)
+                print("selected host ", host_bind[choice1])
+                self.ssh_connect(host_bind[choice1])

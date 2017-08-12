@@ -606,7 +606,7 @@ main(int ac, char **av)
 
  again:
 	while ((opt = getopt(ac, av, "1246ab:c:e:fgi:kl:m:no:p:qstvx"
-	    "ACD:E:F:GI:J:KL:MNO:PQ:R:S:TVw:W:XYy")) != -1) {
+	    "ACD:E:F:GI:J:KL:MNO:PQ:R:S:TVw:W:XYyZ:")) != -1) {
 		switch (opt) {
 		case '1':
 			options.protocol = SSH_PROTO_1;
@@ -930,6 +930,8 @@ main(int ac, char **av)
 			break;
 		case 'F':
 			config = optarg;
+			break;
+		case 'Z':
 			break;
 		default:
 			usage();
