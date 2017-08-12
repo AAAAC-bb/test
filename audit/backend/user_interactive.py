@@ -39,7 +39,7 @@ class UserShell(object):
         session_tracker_script = "/bin/bash {} {} {}"
         session_tracker_script.format(
             settings.SESSION_TRACKER_SCRIPT,
-            self.random_id,
+            self.get_random_id,
             session_obj.id)
         session_tracker_obj = subprocess.Popen(
             session_tracker_script,
@@ -61,7 +61,7 @@ class UserShell(object):
                 self.selected_host.host_user.username,
                 self.selected_host.host.ip_addr,
                 self.selected_host.host.port,
-                self.get_random_id,
+                self.random_id,
             )
         return subprocess.run(cmd, shell=True)
 
