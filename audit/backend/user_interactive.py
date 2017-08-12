@@ -70,10 +70,10 @@ class UserShell(object):
                     continue
                 selected_host = host_bind[choice1]
                 print("selected host ", selected_host)
-                cmd = "ssh %s@%s -p %s" % (
+                cmd = "sshpass -p %s ssh %s@%s -p %s" % (
+                    selected_host.host_user.password,
                     selected_host.host_user.username,
                     selected_host.host.ip_addr,
                     selected_host.host.port,
                     )
                 ssh_channel = subprocess.run(cmd, shell=True)
-                
