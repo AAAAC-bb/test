@@ -1,6 +1,8 @@
 from django.contrib.auth import authenticate
 import subprocess
 import getpass
+import random
+import string
 
 
 class UserShell(object):
@@ -28,15 +30,22 @@ class UserShell(object):
             print("too many attempts!")
             return False
 
+    @property
+    def get_random_id(self):
+        temp_str = string.ascii_lowercase + string.digits
+        self.tag_id = ''.join(random.sample(temp_str, 12))
+        return self.tag_id
+
     def ssh_connect(self, selected_host):
-        cmd = "sshpass -p {} ssh {}@{} -p {} -o StrictHostKeyChecking=no"
+        cmd = "sshpass -p {} ssh-audit {}@{} -p {} -o StrictHostKeyChecking=no -Z {}"
         cmd = cmd.format(
                 selected_host.host_user.password,
                 selected_host.host_user.username,
                 selected_host.host.ip_addr,
                 selected_host.host.port,
+                get_random_id,
             )
-        ssh_channel = subprocess.run(cmd, shell=True)
+        return subprocess.run(cmd, shell=True)
 
     def start(self):
         if not self.auth():
@@ -80,4 +89,4 @@ class UserShell(object):
                 if choice1 not in index_list1:
                     continue
                 print("selected host ", host_bind[choice1])
-                self.ssh_connect(host_bind[choice1])
+                ssh_channel = self.ssh_connect(host_bind[choice1])
