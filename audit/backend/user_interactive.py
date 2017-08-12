@@ -90,3 +90,7 @@ class UserShell(object):
                     continue
                 print("selected host ", host_bind[choice1])
                 ssh_channel = self.ssh_connect(host_bind[choice1])
+
+
+# get pid
+# ps -ef | grep "lxcb9qme62tu" | egrep -v "grep|sshpass" | awk '{print $2}'
