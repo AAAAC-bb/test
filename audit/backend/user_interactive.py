@@ -36,8 +36,8 @@ class UserShell(object):
         session_obj = models.SessionLog.objects.create(
             account=self.user.account,
             host_user_bind=self.selected_host)
-        session_tracker_script = "/bin/bash {} {} {}"
-        session_tracker_script.format(
+        session_tracker_script = "/bin/bash {} {} ./log/{}"
+        session_tracker_script = session_tracker_script.format(
             settings.SESSION_TRACKER_SCRIPT,
             self.get_random_id,
             session_obj.id)
