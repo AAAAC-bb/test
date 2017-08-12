@@ -6,7 +6,7 @@ for i in $(seq 1 30); do
     echo $process_id
     if [ ! -z "$process_id" ];then
         echo "start run strace..."
-        strace -fp $process_id -t -o ssh_audit_$2.log
+        strace -fp $process_id -t -o log/ssh_audit_$2.log
         break;
     fi
     sleep 1
