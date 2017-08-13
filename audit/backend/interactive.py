@@ -19,7 +19,7 @@
 
 import socket
 import sys
-import time
+# import time
 from paramiko.py3compat import u
 from audit import models
 

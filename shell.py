@@ -13,3 +13,5 @@ if __name__ == "__main__":
         obj.start()
     except KeyboardInterrupt:
         print("bye.")
+    except Exception as e:
+        print("Error:\n%s" % e)
