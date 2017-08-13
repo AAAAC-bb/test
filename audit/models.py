@@ -82,6 +82,12 @@ class AuditLog(models.Model):
     """
     log table
     """
+    session = models.ForeignKey('SessionLog')
+    cmd = models.TextField()
+    date = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return "%s-%s" % (self.session, self.cmd)
 
 
 class Account(models.Model):
