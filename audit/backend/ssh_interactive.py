@@ -19,16 +19,11 @@
 # 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA.
 
 
-import base64
 from binascii import hexlify
-import getpass
 import os
-import select
 import socket
 import sys
-import time
 import traceback
-from paramiko.py3compat import input
 from audit import models
 import paramiko
 try:
@@ -112,8 +107,8 @@ def connect(account, host_id, hostname, port, username, password):
         chan.get_pty()
         chan.invoke_shell()
         session_obj = models.SessionLog.objects.create(
-            account=account,
-            host_user_bind=host_id)
+            account_id=account,
+            host_user_bind_id=host_id)
         print('*** Here we go!\n')
         interactive.posix_shell(chan, session_obj)
         chan.close()

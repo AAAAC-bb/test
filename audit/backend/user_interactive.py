@@ -33,45 +33,10 @@ class UserShell(object):
             print("too many attempts!")
             return False
 
-    # def run_script(self):
-        session_obj = models.SessionLog.objects.create(
-        #     account=self.user.account,
-        #     host_user_bind=self.selected_host)
-        # session_tracker_script = "/bin/bash {} {} {}"
-        # session_tracker_script = session_tracker_script.format(
-        #     settings.SESSION_TRACKER_SCRIPT,
-        #     self.get_random_id,
-        #     session_obj.id)
-        # session_tracker_obj = subprocess.Popen(
-        #     session_tracker_script,
-        #     shell=True,
-        #     stdout=subprocess.PIPE,
-        #     stderr=subprocess.PIPE)
-        # return session_tracker_obj
-
-    # @property
-    # def get_random_id(self):
-    #     temp_str = string.ascii_lowercase + string.digits
-    #     self.random_id = ''.join(random.sample(temp_str, 12))
-    #     return self.random_id
-
-    def ssh_connect(self):
-        pass
-        # cmd = "sshpass -p {} ssh-audit {}@{} -p {} -o"
-        # cmd = cmd.format(
-        #         self.selected_host.host_user.password,
-        #         self.selected_host.host_user.username,
-        #         self.selected_host.host.ip_addr,
-        #         self.selected_host.host.port,
-        #         self.random_id,
-        #     )
-        # return subprocess.run(cmd, shell=True)
-
     def start(self):
         if not self.auth():
             return None
-        # # many to many search
-        # print(self.user.account.host_user_binds.all())
+
         index_list = []
         while True:
             host_groups = self.user.account.host_groups.all()
@@ -118,10 +83,3 @@ class UserShell(object):
                     selected_host.host_user.username,
                     selected_host.host_user.password,
                     )
-                # script_obj = self.run_script()
-                # ssh_channel = self.ssh_connect()
-                # print(script_obj.stdout.read(), script_obj.stderr.read())
-
-
-# get pid
-# ps -ef | grep "lxcb9qme62tu" | egrep -v "grep|sshpass" | awk '{print $2}'
