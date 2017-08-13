@@ -9,4 +9,7 @@ if __name__ == "__main__":
     from audit.backend import user_interactive
 
     obj = user_interactive.UserShell(sys.argv)
-    obj.start()
+    try:
+        obj.start()
+    except KeyboardInterrupt:
+        print("bye.")

@@ -1,10 +1,11 @@
 from django.contrib.auth import authenticate
-from audit import models
-from django.conf import settings
-import subprocess
+from audit.backend import ssh_interactive
+# from audit import models
+# from django.conf import settings
+# import subprocess
 import getpass
-import random
-import string
+# import random
+# import string
 
 
 class UserShell(object):
@@ -32,38 +33,39 @@ class UserShell(object):
             print("too many attempts!")
             return False
 
-    def run_script(self):
+    # def run_script(self):
         session_obj = models.SessionLog.objects.create(
-            account=self.user.account,
-            host_user_bind=self.selected_host)
-        session_tracker_script = "/bin/bash {} {} {}"
-        session_tracker_script = session_tracker_script.format(
-            settings.SESSION_TRACKER_SCRIPT,
-            self.get_random_id,
-            session_obj.id)
-        session_tracker_obj = subprocess.Popen(
-            session_tracker_script,
-            shell=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE)
-        return session_tracker_obj
+        #     account=self.user.account,
+        #     host_user_bind=self.selected_host)
+        # session_tracker_script = "/bin/bash {} {} {}"
+        # session_tracker_script = session_tracker_script.format(
+        #     settings.SESSION_TRACKER_SCRIPT,
+        #     self.get_random_id,
+        #     session_obj.id)
+        # session_tracker_obj = subprocess.Popen(
+        #     session_tracker_script,
+        #     shell=True,
+        #     stdout=subprocess.PIPE,
+        #     stderr=subprocess.PIPE)
+        # return session_tracker_obj
 
-    @property
-    def get_random_id(self):
-        temp_str = string.ascii_lowercase + string.digits
-        self.random_id = ''.join(random.sample(temp_str, 12))
-        return self.random_id
+    # @property
+    # def get_random_id(self):
+    #     temp_str = string.ascii_lowercase + string.digits
+    #     self.random_id = ''.join(random.sample(temp_str, 12))
+    #     return self.random_id
 
     def ssh_connect(self):
-        cmd = "sshpass -p {} ssh-audit {}@{} -p {} -o StrictHostKeyChecking=no -Z {}"
-        cmd = cmd.format(
-                self.selected_host.host_user.password,
-                self.selected_host.host_user.username,
-                self.selected_host.host.ip_addr,
-                self.selected_host.host.port,
-                self.random_id,
-            )
-        return subprocess.run(cmd, shell=True)
+        pass
+        # cmd = "sshpass -p {} ssh-audit {}@{} -p {} -o"
+        # cmd = cmd.format(
+        #         self.selected_host.host_user.password,
+        #         self.selected_host.host_user.username,
+        #         self.selected_host.host.ip_addr,
+        #         self.selected_host.host.port,
+        #         self.random_id,
+        #     )
+        # return subprocess.run(cmd, shell=True)
 
     def start(self):
         if not self.auth():
@@ -106,11 +108,19 @@ class UserShell(object):
                     choice1 = int(choice1)
                 if choice1 not in index_list1:
                     continue
-                self.selected_host = host_bind[choice1]
-                print("selected host ", self.selected_host)
-                script_obj = self.run_script()
-                ssh_channel = self.ssh_connect()
-                print(script_obj.stdout.read(), script_obj.stderr.read())
+                selected_host = host_bind[choice1]
+                print("selected host ", selected_host)
+                ssh_interactive.connect(
+                    self.user.account.id,
+                    selected_host.id,
+                    selected_host.host.ip_addr,
+                    selected_host.host.port,
+                    selected_host.host_user.username,
+                    selected_host.host_user.password,
+                    )
+                # script_obj = self.run_script()
+                # ssh_channel = self.ssh_connect()
+                # print(script_obj.stdout.read(), script_obj.stderr.read())
 
 
 # get pid
