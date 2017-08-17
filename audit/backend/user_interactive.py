@@ -76,7 +76,7 @@ class UserShell(object):
                 index_list.append(i)
             # UnGroup host
             print("%s\tUnGroup[%s]" % (
-                len(host_groups), 
+                len(host_groups),
                 self.user.account.host_user_binds.count()))
             # Choice host
             choice = input(">").strip()
