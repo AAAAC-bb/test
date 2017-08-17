@@ -57,7 +57,20 @@ def manual_auth(t, username, password):
     t.auth_password(username, password)
 
 
-def connect(account, host_id, hostname, port, username, password):
+def connect(user_obj, selected_host):
+    """
+        selected_host.id,
+        selected_host.host.ip_addr,
+        selected_host.host.port,
+        selected_host.host_user.username,
+        selected_host.host_user.password,
+    """
+    account = user_obj.account.id
+    host_id = selected_host.id
+    hostname = selected_host.host.ip_addr
+    port = selected_host.host.port
+    username = selected_host.host_user.username
+    password = selected_host.host_user.password
     try:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.connect((hostname, port))

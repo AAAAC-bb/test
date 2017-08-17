@@ -1,9 +1,10 @@
 from django.contrib.auth import authenticate
 from audit.backend import ssh_interactive
-# from audit import models
+from audit import models
 # from django.conf import settings
 # import subprocess
 import getpass
+import datetime
 # import random
 # import string
 
@@ -33,7 +34,36 @@ class UserShell(object):
             print("too many attempts!")
             return False
 
+    def token_auth(self):
+        count = 0
+        while True: 
+            token = input("Login Token:")
+            if count == 3:
+                exit
+            if not token:
+                return None
+            if len(token) != 8:
+                print('incorrect token!')
+                count += 1
+                continue
+            
+            expire_time = datetime.datetime.now() - datetime.timedelta(seconds=300)
+            token_obj = models.LoginToken.objects.filter(
+                val=token, date__gt=expire_time)
+            if not token_obj:
+                print('incorrect token!')
+                count += 1
+                continue
+            self.user = token_obj.account.user
+            return token_obj
+
     def start(self):
+        token_obj = self.token_auth()
+        if token_obj:
+            selected_host = token_obj.host_user_bind
+            ssh_interactive.connect(self.user, selected_host)
+            exit
+
         if not self.auth():
             return None
 
@@ -75,11 +105,4 @@ class UserShell(object):
                     continue
                 selected_host = host_bind[choice1]
                 print("selected host ", selected_host)
-                ssh_interactive.connect(
-                    self.user.account.id,
-                    selected_host.id,
-                    selected_host.host.ip_addr,
-                    selected_host.host.port,
-                    selected_host.host_user.username,
-                    selected_host.host_user.password,
-                    )
+                ssh_interactive.connect(self.user, selected_host)

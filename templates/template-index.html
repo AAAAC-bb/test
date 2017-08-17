@@ -1,0 +1,254 @@
+{% extends "template.html" %}
+{% block body %}
+<header id="navbar">
+	<div id="navbar-container" class="boxed">
+		<div class="navbar-header">
+			<a href="index.html" class="navbar-brand">
+				<div class="brand-title">
+					<span class="brand-text">Audit</span>
+				</div>
+			</a>
+		</div>
+		<div class="navbar-content clearfix">
+			<ul class="nav navbar-top-links pull-left">
+				<li class="tgl-menu-btn">
+					<a class="mainnav-toggle" href="#">
+						<i class="pli-view-list icon-lg"></i>
+					</a>
+				</li>
+			</ul>
+			<ul class="nav navbar-top-links pull-right">
+				<li id="dropdown-user" class="dropdown">
+					<a href="#" data-toggle="dropdown" class="dropdown-toggle text-right">
+						<span class="pull-right">
+							<i class="pli-male ic-user"></i>
+						</span>
+						<div class="username hidden-xs">{{ request.user }}</div>
+					</a>
+					<div class="dropdown-menu dropdown-menu-md dropdown-menu-right panel-default">
+						<div class="pad-all bord-btm">
+							<p class="text-main mar-btm"><span class="text-bold">750GB</span> of 1,000GB Used</p>
+							<div class="progress progress-sm">
+								<div class="progress-bar" style="width: 70%;">
+									<span class="sr-only">70%</span>
+								</div>
+							</div>
+						</div>
+						<ul class="head-list">
+							<li>
+								<a href="#">
+									<i class="pli-male icon-fw icon-lg"></i> Profile
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<span class="badge badge-danger pull-right">9</span>
+									<i class="pli-mail icon-fw icon-lg"></i> Messages
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<span class="label label-success pull-right">New</span>
+									<i class="pli-gear icon-fw icon-lg"></i> Settings
+								</a>
+							</li>
+						</ul>
+						<div class="pad-all text-right">
+							<a href="/exit/" class="btn btn-primary">
+								<i class="pli-unlock icon-fw"></i> Logout
+							</a>
+						</div>
+					</div>
+				</li>
+				<li>
+					<a href="#" class="aside-toggle navbar-aside-icon">
+						<i class="pci-ver-dots"></i>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<style>
+		.brand-text {
+			margin-left: 10px;
+		}
+	</style>
+	{% block style %}
+	{% endblock style %}
+</header>
+<div class="boxed">
+	<div id="content-container">
+		<div id="page-title">
+			<h1 class="page-header text-overflow">{% block content-title %}Title{% endblock content-title %}</h1>
+			<div class="searchbox">
+				<div class="input-group custom-search-form">
+					<input type="text" class="form-control" placeholder="Search..">
+					<span class="input-group-btn">
+						<button class="text-muted" type="button"><i class="pli-magnifi-glass"></i></button>
+					</span>
+				</div>
+			</div>
+		</div>
+		<ol class="breadcrumb">
+			<li><a href="#">Home</a></li>
+			<li><a href="#">Library</a></li>
+			<li class="active">Data</li>
+		</ol>
+		<div id="page-content">
+			{% block content %}
+			
+			{% endblock content %}
+		</div>
+	</div>
+	<nav id="mainnav-container">
+		<div id="mainnav">
+		<div id="mainnav-menu-wrap">
+			<div class="nano">
+				<div class="nano-content">
+					<div id="mainnav-shortcut">
+						<ul class="list-unstyled">
+							<li class="col-xs-4" data-content="Shortcut 1">
+								<a class="shortcut-grid" href="#">
+									<i class="psi-cloud"></i>
+								</a>
+							</li>
+							<li class="col-xs-4" data-content="Shortcut 2">
+								<a class="shortcut-grid" href="#">
+									<i class="psi-data-stream"></i>
+								</a>
+							</li>
+							<li class="col-xs-4" data-content="Shortcut 3">
+								<a class="shortcut-grid" href="#">
+									<i class="psi-phone-sms"></i>
+								</a>
+							</li>
+						</ul>
+					</div>
+					<ul id="mainnav-menu" class="list-group">
+						<li class="list-header">Link List</li>
+						<li>
+							<a href="{% url 'index' %}">
+								<i class="psi-quill-2"></i>
+								<span class="menu-title">Main</span>
+							</a>
+						</li>
+						<li>
+							<a href="{% url 'host_list' %}">
+								<i class="psi-mail-love"></i>
+								<span class="menu-title">
+									<strong>HostList</strong>
+								</span>
+							</a>
+						</li>
+						<li>
+							<a href="#">
+								<i class="psi-quill-3"></i>
+								<span class="menu-title">Host Manage</span>
+								<i class="arrow"></i>
+							</a>
+							<ul class="collapse">
+								<li><a href="#">Command</a></li>
+								<li><a href="#">Files</a></li>
+							</ul>
+						</li>
+						<li>
+							<a href="#">
+								<i class="psi-usb"></i>
+								<span class="menu-title">
+									Audit
+								</span>
+							</a>
+						</li>
+						<li class="list-divider"></li>
+						<li class="list-header">Submenus</li>
+						<li>
+							<a href="#">
+								<i class="psi-hipster-headphones"></i>
+								<span class="menu-title">
+									<strong>Configuration</strong>
+								</span>
+								<i class="arrow"></i>
+							</a>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</nav>
+	<aside id="aside-container">
+		<div id="aside">
+			<div class="nano">
+				<div class="nano-content">
+					<ul class="nav nav-tabs nav-justified">
+						<li class="active">
+							<a href="#demo-asd-tab-1" data-toggle="tab">
+								<i class="pli-speech-bubble-7"></i>
+							</a>
+						</li>
+						<li>
+							<a href="#demo-asd-tab-2" data-toggle="tab">
+								<i class="pli-information"></i>
+								Reports
+							</a>
+						</li>
+						<li>
+							<a href="#demo-asd-tab-3" data-toggle="tab">
+								<i class="pli-wrench"></i>
+								Settings
+							</a>
+						</li>
+					</ul>
+					<div class="tab-content">
+						<div class="tab-pane fade in active" id="demo-asd-tab-1">
+							<p class="pad-all text-lg">First tab</p>
+							<div class="pad-hor">
+								Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna
+								aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper
+								suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure
+								dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu
+								feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit
+								praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.
+							</div>
+						</div>
+						<div class="tab-pane fade" id="demo-asd-tab-2">
+							<p class="pad-all text-lg">Second tab</p>
+							<div class="pad-hor">
+								Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna
+								aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper
+								suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure
+								dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu
+								feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit
+								praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.
+							</div>
+						</div>
+						<div class="tab-pane fade" id="demo-asd-tab-3">
+							<p class="pad-all text-lg">Third tab</p>
+							<div class="pad-hor">
+								Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna
+								aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper
+								suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure
+								dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu
+								feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit
+								praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</aside>
+</div>
+<footer id="footer">
+	<p class="pad-lft">&#0169; 2017 Your Company</p>
+</footer>
+<button class="scroll-top btn">
+<i class="pci-chevron chevron-up" ></i>
+</button>
+{% endblock body %}
+{% block js %}
+<script>
+	$(document).ready(function (){
+		$('a[href="{{ request.path }}"]').parent().addClass('active-link')
+	})
+</script>
+{% endblock js %}

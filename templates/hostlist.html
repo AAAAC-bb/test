@@ -1,0 +1,130 @@
+{% extends "template-index.html" %}
+{% block content-title %}HostList{% endblock content-title %}
+{% block style %}
+<style>
+    .badge-text-dark {
+        color: #000 !important;
+    }
+</style>
+{% endblock style %}
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="panel panel-dark panel-colorful">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    HostGroup
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="list-group bg-trans">
+                    <a class="list-group-item" href="#" onclick="getHostlist('-1', this);">UnGroup<span class="badge badge-default badge-text-dark">{{ user.account.host_user_binds.count }}</span></a>
+                    {% for group in request.user.account.host_groups.all %}
+                        <a class="list-group-item" href="#" onclick="getHostlist({{group.id}}, this);" >{{ group.name }}<span class="badge badge-default badge-text-dark">{{ group.host_user_binds.count }}</span></a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="panel panel-dark">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    HostList
+                </h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-bordered table-hover toggle-circle default footable-loaded footable" data-page-size="7">
+                    <thead>
+                        <tr>
+                            <th>Host Name<span class="footable-sort-indicator"></span></th>
+                            <th>Ip Address<span class="footable-sort-indicator"></span></th>
+                            <th>Port<span class="footable-sort-indicator"></span></th>
+                            <th>User Name<span class="footable-sort-indicator"></span></th>
+                            <th>Action<span class="footable-sort-indicator"></span></th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="host-list">
+                    </tbody>
+                    
+                </table>
+
+                <div class="text-center">
+                    <ul class="pagination">
+                        <li class="footable-page-arrow disabled"><a data-page="first" href="#first">«</a></li>
+                        <li class="footable-page-arrow disabled"><a data-page="prev" href="#prev">‹</a></li>
+                        <li class="footable-page active"><a data-page="0" href="#">1</a></li>
+                        <li class="footable-page"><a data-page="1" href="#">2</a></li>
+                        <li class="footable-page"><a data-page="2" href="#">3</a></li>
+                        <li class="footable-page"><a data-page="3" href="#">4</a></li>
+                        <li class="footable-page"><a data-page="4" href="#">5</a></li>
+                        <li class="footable-page-arrow"><a data-page="next" href="#next">›</a></li>
+                        <li class="footable-page-arrow"><a data-page="last" href="#last">»</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>  
+</div>
+<div id="demo-sm-modal" class="modal fade" tabindex="-1" style="display: none;">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><i class="pci-cross pci-circle"></i></button>
+                <h4 class="modal-title" id="mySmallModalLabel">Copy your token to Login</h4>
+            </div>
+            <div class="modal-body">
+                <p></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+{% block js %}
+<script>
+    function getToken(self, hostID){
+        $.post(
+            "{% url 'get_token' %}", 
+            {
+                'id': hostID,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            function (callbackArg){
+                var callbackArg = JSON.parse(callbackArg);
+                console.log(callbackArg)
+                $p = $('<p></p>')
+                $p.html('<h3>'+ callbackArg.token +'</h3>')
+                $('#demo-sm-modal').find('.modal-body').children().append($p)
+                $('#demo-sm-modal').modal()
+            }
+        )
+    };
+    function getHostlist(id, self){
+        $(self).addClass('active');
+        $(self).siblings().removeClass('active');
+        $('#host-list').html('');
+        $.get("{% url 'api_host_list' %}", {'gid': id}, function (callbackArg){
+            var jsonData = JSON.parse(callbackArg);
+            $.each(jsonData, function(i, v){
+                var $tr = $('<tr class="footable-even"></tr>');
+                $.each(v, function(ii, vv){
+                    if (ii != 'id'){
+                        var $td = $('<td class="footable-visible"></td>')
+                        $td.text(vv);
+                        $tr.append($td);
+                    }
+                });
+                var $td = $('<td class="footable-visible"></td>')
+                var $loginBtn = $('<button class="btn btn-default" onclick="" >Login</button>')
+                var $tokenBd = $('<button class="btn btn-default" onclick="getToken(this,'+ v.id +')" >Token</button>')
+                $td.append($loginBtn, ' ', $tokenBd)
+                $tr.append($td);
+                $('#host-list').append($tr);
+            });
+        });
+    };
+    $('.list-group-item').eq(0).trigger('click');
+</script>
+
+{% endblock js %}

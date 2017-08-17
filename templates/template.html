@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audit</title>
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/nifty.min.css" rel="stylesheet">
+    <link href="/static/premium/icon-sets/icons/line-icons/premium-line-icons.min.css" rel="stylesheet">
+    <link href="/static/premium/icon-sets/icons/solid-icons/premium-solid-icons.min.css" rel="stylesheet">
+    <link href="/static/css/pace.min.css" rel="stylesheet">
+    <link href="/static/plugins/magic-check/css/magic-check.min.css" rel="stylesheet">
+    {% block style %}{% endblock style %}
+</head>
+
+<body>
+    <div id="container" class="effect mainnav-lg mainnav-fixed navbar-fixed">
+        {% block body %}
+        {% endblock body %}
+    </div>
+    <script src="/static/js/pace.min.js"></script>
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/nifty.min.js"></script>
+    {% block js %}{% endblock js %}
+</body>
+
+</html>

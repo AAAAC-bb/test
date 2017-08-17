@@ -15,7 +15,17 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from audit import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^signin/$', views.signin),
+    url(r'^exit/$', views.exit),
+    
+    url(r'^$', views.index, name='index'),
+    url(r'^hostlist/$', views.hostlist, name='host_list'),
+
+    url(r'^api/hostlist/$', views.api_host_list, name='api_host_list'),
+    url(r'^api/token/$', views.api_host_token, name='get_token'),
+
 ]

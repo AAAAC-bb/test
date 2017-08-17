@@ -55,7 +55,7 @@ ROOT_URLCONF = 'blj.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'), ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -119,8 +119,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
-
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'statics'),
+)
 
 SESSION_TRACKER_SCRIPT = os.path.join(
     BASE_DIR,
     'audit/backend/session_tracker.sh')
+LOGIN_URL = '/signin/'
