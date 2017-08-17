@@ -49,7 +49,7 @@ class UserShell(object):
             
             expire_time = datetime.datetime.now() - datetime.timedelta(seconds=300)
             token_obj = models.LoginToken.objects.filter(
-                val=token, date__gt=expire_time)
+                val=token, date__gt=expire_time).first()
             if not token_obj:
                 print('incorrect token!')
                 count += 1
